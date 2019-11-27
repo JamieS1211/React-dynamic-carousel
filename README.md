@@ -1,7 +1,7 @@
 # React-dynamic-carousel
 Create multi element carousels in react with smart sizes
 
-Rective-carousel takes in a number of fixed with "tiles" and renders them in a horizontal scrolling carousel, dynamically adjusting the spacing between tiles to keep a clean UI effect.
+Rect-dynamic-carousel takes in a number of fixed with "tiles" and renders them in a horizontal scrolling carousel, dynamically adjusting the spacing between tiles to keep a clean UI effect.
 
 ## Installation
 **NPM**: `npm install react-dynamic-carousel`
