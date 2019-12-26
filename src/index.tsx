@@ -36,7 +36,7 @@ export interface IAction {
 }
 
 export interface IProps {
-    tiles: Node[]
+    tiles: React.ReactNode[]
     elementWidth: number
     fadeDistance?: number
     minPadding?: number
