@@ -1,6 +1,6 @@
 {
     "name": "react-dynamic-carousel",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "description": "Create multi element carousels in react with smart sizes",
     "main": "dist/index.js",
     "homepage": "https://github.com/JamieS1211/react-dynamic-carousel",
@@ -13,7 +13,8 @@
     "scripts": {
         "lint": "tslint -c tslint.json -p tsconfig.json --fix",
         "tsc": "tsc",
-        "build": "npm-run-all lint tsc"
+        "build": "npm-run-all lint tsc",
+        "prepublish": "npm run build"
     },
     "peerDependencies": {
         "react": "^16.12.0",
