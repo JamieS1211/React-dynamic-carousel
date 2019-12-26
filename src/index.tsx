@@ -1,8 +1,8 @@
-import React, { useLayoutEffect, useReducer, useRef } from "react";
-import { animated, useSpring } from "react-spring";
+import React, { useLayoutEffect, useReducer, useRef } from "react"
+import { animated, useSpring } from "react-spring"
 
-import KeyboardArrowLeft from "@material-ui/icons/KeyboardArrowLeft";
-import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight";
+import KeyboardArrowLeft from "@material-ui/icons/KeyboardArrowLeft"
+import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight"
 
 const initialState = {
     galleryPosition: 0,
@@ -11,51 +11,60 @@ const initialState = {
     elementsShown: 0,
     excessSpace: 0,
     paddingComponentWidth: 1000
-};
-
-interface IState {
-    galleryPosition: number;
-    galleryWidth: number;
-    useableWidth: number;
-    elementsShown: number;
-    excessSpace: number;
-    paddingComponentWidth: number;
 }
 
-interface IAction {
-    type: string;
+export interface IState {
+    galleryPosition: number
+    galleryWidth: number
+    useableWidth: number
+    elementsShown: number
+    excessSpace: number
+    paddingComponentWidth: number
+}
+
+export interface IAction {
+    type: string
     payload: {
-        elementCount?: number,
-        onReachStart?: (arg0: IState) => void,
-        onReachEnd?: (arg0: IState) => void,
-        galleryWidth?: number,
-        fadeDistance?: number,
-        elementWidth?: number,
+        elementCount?: number
+        onReachStart?: (arg0: IState) => void
+        onReachEnd?: (arg0: IState) => void
+        galleryWidth?: number
+        fadeDistance?: number
+        elementWidth?: number
         minPadding?: number
-    };
+    }
+}
+
+export interface IProps {
+    tiles: Node[]
+    elementWidth: number
+    fadeDistance?: number
+    minPadding?: number
+    onReachEnd?: () => void
+    onReachStart?: () => void
 }
 
 function reducer(state: IState, action: IAction) {
     switch (action.type) {
         case "movePrev":
             if (state.galleryPosition > 0) {
-                return { ...state, galleryPosition: state.galleryPosition - 1 };
+                return { ...state, galleryPosition: state.galleryPosition - 1 }
             } else if (action.payload.onReachStart !== undefined) {
-                action.payload.onReachStart(state);
+                action.payload.onReachStart(state)
             }
-            return state;
+            return state
         case "moveNext":
             if (state.galleryPosition < action.payload.elementCount - state.elementsShown) {
-                return { ...state, galleryPosition: state.galleryPosition + 1 };
+                return { ...state, galleryPosition: state.galleryPosition + 1 }
             } else if (action.payload.onReachEnd !== undefined) {
-                action.payload.onReachEnd(state);
+                action.payload.onReachEnd(state)
             }
-            return state;
+            return state
         case "setGalleryWidth":
-            const useableWidth = state.galleryWidth - 2 * action.payload.fadeDistance;
-            const elementsShown = Math.floor(useableWidth / (action.payload.elementWidth + action.payload.minPadding));
-            const excessSpace = useableWidth - action.payload.elementWidth * elementsShown;
-            const totalComponentPadding = elementsShown < 2 ? 0 : excessSpace / (elementsShown - 1);
+            const useableWidth = state.galleryWidth - 2 * action.payload.fadeDistance
+            const elementsShown = Math.floor(useableWidth / (action.payload.elementWidth + action.payload.minPadding))
+            const excessSpace = useableWidth - action.payload.elementWidth * elementsShown
+            const totalComponentPadding = elementsShown < 2 ? 0 : excessSpace / (elementsShown - 1)
             return {
                 ...state,
                 galleryWidth: action.payload.galleryWidth,
@@ -63,29 +72,20 @@ function reducer(state: IState, action: IAction) {
                 elementsShown,
                 excessSpace,
                 paddingComponentWidth: totalComponentPadding
-            };
+            }
         default:
-            throw new Error("Invalid action type");
+            throw new Error("Invalid action type")
     }
 }
 
-interface IProps {
-    tiles: Node[];
-    elementWidth: number;
-    fadeDistance?: number;
-    minPadding?: number;
-    onReachEnd?: () => void;
-    onReachStart?: () => void;
-}
-
 const HorizontalGallery: React.FC<IProps> = (props) => {
-    const fadeDistance = props.fadeDistance === undefined ? 100 : props.fadeDistance;
-    const elementWidth = props.elementWidth;
-    const minPadding = props.minPadding === undefined ? 0 : props.minPadding;
+    const fadeDistance = props.fadeDistance === undefined ? 100 : props.fadeDistance
+    const elementWidth = props.elementWidth
+    const minPadding = props.minPadding === undefined ? 0 : props.minPadding
 
-    const galleryTrack = useRef(null);
+    const galleryTrack = useRef(null)
 
-    const [state, dispatch] = useReducer(reducer, initialState);
+    const [state, dispatch] = useReducer(reducer, initialState)
 
     useLayoutEffect(() => {
         if (galleryTrack && galleryTrack.current) {
@@ -98,31 +98,30 @@ const HorizontalGallery: React.FC<IProps> = (props) => {
                         elementWidth,
                         minPadding
                     }
-                });
+                })
 
             // This is an instantaneous delay, allowing the page to render a vertical scroll bar if needed,
             // and then take that into account when settings size
-            setTimeout(() => updateSize(), 0);
+            setTimeout(() => updateSize(), 0)
 
-            window.addEventListener("resize", updateSize);
+            window.addEventListener("resize", updateSize)
 
-            return () => window.removeEventListener("resize", updateSize);
+            return () => window.removeEventListener("resize", updateSize)
         }
         // Removing galleryTrack.current causes issues
         // eslint-disable-next-line
-    }, [galleryTrack.current, fadeDistance, elementWidth, minPadding, dispatch]);
+    }, [galleryTrack.current, fadeDistance, elementWidth, minPadding, dispatch])
 
     const trackProps = useSpring({
         to: {
-            transform: `translate(${fadeDistance -
-                (elementWidth + state.paddingComponentWidth) * state.galleryPosition}px)`
+            transform: `translate(${fadeDistance - (elementWidth + state.paddingComponentWidth) * state.galleryPosition}px)`
         }
-    });
+    })
     const paddingProps = useSpring({
         to: {
             width: state.paddingComponentWidth
         }
-    });
+    })
 
     return (
         <div style={{ display: "flex", position: "relative" }}>
@@ -178,7 +177,7 @@ const HorizontalGallery: React.FC<IProps> = (props) => {
                 />
             </div>
         </div>
-    );
-};
+    )
+}
 
-export default HorizontalGallery;
+export default HorizontalGallery
