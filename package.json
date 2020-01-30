@@ -14,7 +14,7 @@
         "lint": "tslint -c tslint.json -p tsconfig.json --fix",
         "tsc": "tsc",
         "build": "npm-run-all lint tsc",
-        "prepublish": "npm run build"
+        "prepare": "npm run build"
     },
     "peerDependencies": {
         "react": "^16.12.0",
