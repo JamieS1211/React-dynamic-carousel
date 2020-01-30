@@ -149,7 +149,7 @@ const HorizontalGallery: React.FC<IProps> = (props) => {
                 }}
             >
                 <KeyboardArrowLeft
-                    style={{ transform: `translate(-110%)` }}
+                    style={{ transform: `translate(-110%)`, opacity: state.galleryPosition > 0 ? 1 : 0.2 }}
                     onClick={() => dispatch({ type: "movePrev", payload: { onReachStart: props.onReachStart } })}
                 />
             </div>
@@ -167,7 +167,7 @@ const HorizontalGallery: React.FC<IProps> = (props) => {
                 }}
             >
                 <KeyboardArrowRight
-                    style={{ transform: `translate(110%)` }}
+                    style={{ transform: `translate(110%)`, opacity: state.galleryPosition < props.tiles.length - state.elementsShown ? 1 : 0.2 }}
                     onClick={() =>
                         dispatch({
                             type: "moveNext",
