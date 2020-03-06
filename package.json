@@ -14,7 +14,7 @@
         "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
         "tsc": "tsc",
         "build": "npm-run-all lint tsc",
-        "prepare1": "npm run build"
+        "prepare": "npm run build"
     },
     "peerDependencies": {
         "react": "^16.13.0",
